@@ -573,6 +573,515 @@ Now each table stores one subject, and relationships connect the data.
 | **4NF** | No multi-valued dependencies | Separate independent multi-valued facts into different tables. |
 | **5NF** | No join dependency redundancy | Remove redundancy caused by complex join dependencies. |
 
+### Normalization Conversion Roadmap
+
+Use normalization as a step-by-step cleanup process. Do not jump directly from an unnormalized table to 5NF. Fix one type of problem at a time.
+
+```mermaid
+flowchart LR
+    UNF["Unnormalized data<br/>repeating groups<br/>mixed subjects"]
+    F1["1NF<br/>atomic values"]
+    F2["2NF<br/>no partial dependency"]
+    F3["3NF<br/>no transitive dependency"]
+    BC["BCNF<br/>every determinant is a super key"]
+    F4["4NF<br/>no multi-valued dependency"]
+    F5["5NF<br/>no join dependency redundancy"]
+
+    UNF --> F1 --> F2 --> F3 --> BC --> F4 --> F5
+```
+
+Text version:
+
+```text
+UNF -> 1NF -> 2NF -> 3NF -> BCNF -> 4NF -> 5NF
+```
+
+Practical classroom rule:
+
+```text
+Normalize to 3NF first.
+Go beyond 3NF only when BCNF, 4NF, or 5NF problems actually exist.
+```
+
+### Step 0: Start from the Unnormalized Table
+
+First, identify what is wrong with the original table.
+
+Ask:
+
+- Does one column contain many values?
+- Are there repeating columns such as `project1`, `project2`, `project3`?
+- Does the table store more than one subject?
+- Are names, prices, locations, or departments repeated many times?
+
+Example unnormalized table:
+
+```text
+employee_project_raw(
+  employee_id,
+  employee_name,
+  department_name,
+  manager_name,
+  project1,
+  project2,
+  skills
+)
+```
+
+Problem diagram:
+
+```text
+One large table
+  |
+  |-- employee data
+  |-- department data
+  |-- manager data
+  |-- project data
+  |-- repeated skills
+```
+
+### How to Convert to 1NF
+
+Goal: remove repeating groups and make every value atomic.
+
+Instructions:
+
+1. Find columns that contain multiple values, such as `SQL, Python`.
+2. Find repeating columns, such as `project1`, `project2`, `project3`.
+3. Move each repeated value into its own row.
+4. Make sure each cell contains only one value.
+
+Before 1NF:
+
+```text
+employee_id | employee_name | skills
+1           | Aung Aung     | SQL, Python, Excel
+```
+
+After 1NF:
+
+```text
+employee_id | employee_name | skill
+1           | Aung Aung     | SQL
+1           | Aung Aung     | Python
+1           | Aung Aung     | Excel
+```
+
+1NF diagram:
+
+```mermaid
+flowchart LR
+    A["skills = SQL, Python, Excel"]
+    B["skill = SQL"]
+    C["skill = Python"]
+    D["skill = Excel"]
+
+    A --> B
+    A --> C
+    A --> D
+```
+
+Checkpoint:
+
+```text
+If a cell still contains a list, the table is not in 1NF.
+```
+
+### How to Convert to 2NF
+
+Goal: remove partial dependency.
+
+Use 2NF when a table has a composite primary key.
+
+Instructions:
+
+1. Make sure the table is already in 1NF.
+2. Identify the primary key.
+3. If the primary key has more than one column, check every non-key column.
+4. If a non-key column depends on only part of the composite key, move it to a separate table.
+5. Keep the relationship table with only the columns that depend on the whole key.
+
+Problem table:
+
+```text
+employee_projects(employee_id, project_id, employee_name, project_name)
+```
+
+Primary key:
+
+```text
+(employee_id, project_id)
+```
+
+Dependency diagram:
+
+```mermaid
+flowchart TD
+    K["Composite key<br/>(employee_id, project_id)"]
+    E["employee_id"]
+    P["project_id"]
+    EN["employee_name"]
+    PN["project_name"]
+
+    K --> E
+    K --> P
+    E --> EN
+    P --> PN
+```
+
+Problem:
+
+- `employee_name` depends only on `employee_id`.
+- `project_name` depends only on `project_id`.
+
+2NF design:
+
+```text
+employees(employee_id, employee_name)
+projects(project_id, project_name)
+employee_projects(employee_id, project_id)
+```
+
+If `project_id` does not exist in the original table, create it during normalization.
+
+Example original table:
+
+```text
+employee_projects_raw(employee_id, employee_name, project_name, project_location)
+```
+
+Original data:
+
+```text
+employee_id | employee_name | project_name | project_location
+1           | Aung Aung     | HRIS         | Yangon
+2           | Su Su         | Payroll      | Mandalay
+3           | Kyaw Kyaw     | HRIS         | Yangon
+```
+
+Create a new `project_id` for each unique project:
+
+```text
+projects(project_id, project_name, project_location)
+
+project_id | project_name | project_location
+P01        | HRIS         | Yangon
+P02        | Payroll      | Mandalay
+```
+
+Then store employee-project relationships using the new ID:
+
+```text
+employee_projects(employee_id, project_id)
+
+employee_id | project_id
+1           | P01
+2           | P02
+3           | P01
+```
+
+Final 2NF design:
+
+```text
+employees(employee_id, employee_name)
+projects(project_id, project_name, project_location)
+employee_projects(employee_id, project_id)
+```
+
+Key idea:
+
+```text
+If an ID does not exist, create a surrogate key or natural key for the new table.
+```
+
+2NF table split:
+
+```mermaid
+erDiagram
+    EMPLOYEES ||--o{ EMPLOYEE_PROJECTS : works_on
+    PROJECTS ||--o{ EMPLOYEE_PROJECTS : includes
+
+    EMPLOYEES {
+        int employee_id PK
+        string employee_name
+    }
+
+    PROJECTS {
+        int project_id PK
+        string project_name
+    }
+
+    EMPLOYEE_PROJECTS {
+        int employee_id FK
+        int project_id FK
+    }
+```
+
+Checkpoint:
+
+```text
+If a non-key column depends on only half of a composite key, the table is not in 2NF.
+```
+
+### How to Convert to 3NF
+
+Goal: remove transitive dependency.
+
+Instructions:
+
+1. Make sure the design is already in 2NF.
+2. Look for non-key columns that determine other non-key columns.
+3. Move the dependent non-key columns into a new table.
+4. Keep a foreign key in the original table.
+
+Problem table:
+
+```text
+employees(employee_id, employee_name, department_id, department_name, manager_name)
+```
+
+Dependency diagram:
+
+```mermaid
+flowchart LR
+    A["employee_id"]
+    B["department_id"]
+    C["department_name"]
+    D["manager_name"]
+
+    A --> B
+    B --> C
+    B --> D
+```
+
+Problem:
+
+- `employee_id` determines `department_id`.
+- `department_id` determines `department_name` and `manager_name`.
+- Therefore, department details should not stay inside the employee table.
+
+3NF design:
+
+```text
+employees(employee_id, employee_name, department_id)
+departments(department_id, department_name, manager_name)
+```
+
+3NF table split:
+
+```mermaid
+erDiagram
+    DEPARTMENTS ||--o{ EMPLOYEES : has
+
+    DEPARTMENTS {
+        int department_id PK
+        string department_name
+        string manager_name
+    }
+
+    EMPLOYEES {
+        int employee_id PK
+        string employee_name
+        int department_id FK
+    }
+```
+
+Checkpoint:
+
+```text
+If a non-key column depends on another non-key column, the table is not in 3NF.
+```
+
+### How to Convert to BCNF
+
+Goal: make every determinant a super key.
+
+Instructions:
+
+1. Make sure the design is already close to 3NF.
+2. List all functional dependencies.
+3. For each dependency `A -> B`, ask: is `A` a super key?
+4. If `A` is not a super key, split the table.
+
+BCNF test:
+
+```text
+For every dependency:
+A -> B
+
+A must be a super key.
+```
+
+Problem example:
+
+```text
+class_schedule(student_id, course_id, instructor)
+```
+
+Assume:
+
+```text
+(student_id, course_id) -> instructor
+instructor -> course_id
+```
+
+If one instructor teaches only one course, `instructor` determines `course_id`. But `instructor` is not a super key for the whole table, so this violates BCNF.
+
+BCNF split:
+
+```text
+instructors(instructor, course_id)
+student_instructors(student_id, instructor)
+```
+
+BCNF diagram:
+
+```mermaid
+flowchart TD
+    A["class_schedule<br/>(student_id, course_id, instructor)"]
+    B["instructors<br/>(instructor, course_id)"]
+    C["student_instructors<br/>(student_id, instructor)"]
+
+    A --> B
+    A --> C
+```
+
+Checkpoint:
+
+```text
+If something determines another column but is not a super key, the table is not in BCNF.
+```
+
+### How to Convert to 4NF
+
+Goal: remove independent multi-valued dependencies.
+
+Instructions:
+
+1. Make sure the design is already in BCNF.
+2. Look for one entity with two or more independent multi-valued facts.
+3. Do not store all combinations in one table.
+4. Split each independent multi-valued fact into its own table.
+
+Problem table:
+
+```text
+employee_profile(employee_id, skill, language)
+```
+
+Problem:
+
+- An employee can have many skills.
+- An employee can speak many languages.
+- Skills and languages are independent facts.
+- Storing them together creates unnecessary combinations.
+
+Bad combination table:
+
+```text
+employee_id | skill  | language
+1           | SQL    | English
+1           | SQL    | Myanmar
+1           | Python | English
+1           | Python | Myanmar
+```
+
+4NF design:
+
+```text
+employee_skills(employee_id, skill)
+employee_languages(employee_id, language)
+```
+
+4NF diagram:
+
+```mermaid
+erDiagram
+    EMPLOYEES ||--o{ EMPLOYEE_SKILLS : has
+    EMPLOYEES ||--o{ EMPLOYEE_LANGUAGES : speaks
+
+    EMPLOYEES {
+        int employee_id PK
+        string employee_name
+    }
+
+    EMPLOYEE_SKILLS {
+        int employee_id FK
+        string skill
+    }
+
+    EMPLOYEE_LANGUAGES {
+        int employee_id FK
+        string language
+    }
+```
+
+Checkpoint:
+
+```text
+If two independent lists are being combined in one table, check for a 4NF problem.
+```
+
+### How to Convert to 5NF
+
+Goal: remove join dependency redundancy.
+
+5NF is used for rare cases where a large relationship table can be safely reconstructed by joining smaller relationship tables.
+
+Instructions:
+
+1. Make sure the design is already in 4NF.
+2. Look for a table that stores complex combinations of three or more entities.
+3. Ask whether the table can be reconstructed from smaller relationship tables.
+4. If yes, split the table into smaller relationship tables.
+5. Only use 5NF when the business rules prove the split is correct.
+
+Problem table:
+
+```text
+supplier_part_project(supplier_id, part_id, project_id)
+```
+
+Possible 5NF split:
+
+```text
+supplier_parts(supplier_id, part_id)
+supplier_projects(supplier_id, project_id)
+part_projects(part_id, project_id)
+```
+
+5NF diagram:
+
+```mermaid
+flowchart TD
+    A["supplier_part_project<br/>(supplier_id, part_id, project_id)"]
+    B["supplier_parts<br/>(supplier_id, part_id)"]
+    C["supplier_projects<br/>(supplier_id, project_id)"]
+    D["part_projects<br/>(part_id, project_id)"]
+
+    A --> B
+    A --> C
+    A --> D
+```
+
+Important warning:
+
+```text
+Do not split into 5NF unless the smaller tables can recreate the original facts correctly.
+Wrong 5NF decomposition can create false relationships.
+```
+
+### Normalization Decision Checklist
+
+| Step | Question | If Yes |
+| --- | --- | --- |
+| 1NF | Does any cell contain a list or repeated group? | Split values into atomic rows. |
+| 2NF | Does a non-key column depend on part of a composite key? | Move it to its own table. |
+| 3NF | Does a non-key column depend on another non-key column? | Move the dependent data to a lookup table. |
+| BCNF | Does a determinant fail to be a super key? | Split based on the dependency. |
+| 4NF | Are independent multi-valued facts combined? | Split each independent list. |
+| 5NF | Are complex join combinations redundant? | Split only if joins can reconstruct the truth. |
+
 ### 1NF: First Normal Form
 
 Rule: values must be **atomic**, meaning each cell should contain only one value.
@@ -597,7 +1106,11 @@ employee_id | employee_name | skill
 
 Rule: the table must be in 1NF, and there must be **no partial dependency**.
 
-Partial dependency happens when a non-key column depends on only part of a composite key.
+Partial dependency happens when a non-key column depends on only **part of a composite primary key**, instead of depending on the whole key.
+
+> 2NF question: Does every non-key column depend on the **whole primary key**?
+
+This mostly matters when a table uses a primary key made from more than one column.
 
 Problem table:
 
@@ -605,10 +1118,17 @@ Problem table:
 employee_projects(employee_id, project_id, employee_name, project_name)
 ```
 
-If the key is `(employee_id, project_id)`:
+Primary key:
+
+```text
+(employee_id, project_id)
+```
+
+Problem:
 
 - `employee_name` depends only on `employee_id`.
 - `project_name` depends only on `project_id`.
+- Neither column depends on the full key `(employee_id, project_id)`.
 
 Better design:
 
@@ -622,7 +1142,9 @@ employee_projects(employee_id, project_id)
 
 Rule: the table must be in 2NF, and there must be **no transitive dependency**.
 
-Transitive dependency happens when a non-key column depends on another non-key column.
+Transitive dependency happens when a non-key column depends on another **non-key column**, instead of depending directly on the primary key.
+
+> 3NF question: Does any non-key column depend on another **non-key column**?
 
 Problem table:
 
@@ -644,6 +1166,20 @@ Better design:
 ```text
 employees(employee_id, employee_name, department_id)
 departments(department_id, department_name)
+```
+
+### 2NF vs 3NF Quick Difference
+
+| Normal Form | Removes | Main Question | Example Problem |
+| --- | --- | --- | --- |
+| **2NF** | Partial dependency | Does every non-key column depend on the whole primary key? | `employee_name` depends only on `employee_id`, not full key `(employee_id, project_id)` |
+| **3NF** | Transitive dependency | Does any non-key column depend on another non-key column? | `department_name` depends on `department_id`, not directly on `employee_id` |
+
+Simple memory trick:
+
+```text
+2NF = no partial dependency
+3NF = no transitive dependency
 ```
 
 ### BCNF: Boyce-Codd Normal Form
