@@ -15,6 +15,56 @@ By the end of Day 3, students should be able to:
 
 ---
 
+## Exam Recap Guide
+
+<table>
+<tr>
+<td><strong><span style="color:#2563eb">Blue</span></strong></td>
+<td>Core definitions and concepts</td>
+</tr>
+<tr>
+<td><strong><span style="color:#16a34a">Green</span></strong></td>
+<td>Processes, workflows, and step-by-step logic</td>
+</tr>
+<tr>
+<td><strong><span style="color:#ea580c">Orange</span></strong></td>
+<td>SQL syntax, commands, formulas, and examples</td>
+</tr>
+<tr>
+<td><strong><span style="color:#dc2626">Red</span></strong></td>
+<td>Risks, mistakes, anomalies, and warnings</td>
+</tr>
+</table>
+
+### Quick Topic Map
+
+| Color | Topic | What to Recap Before Exam |
+| --- | --- | --- |
+| <span style="color:#2563eb">&#9679;</span> | 1. Why Transactions Matter | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#16a34a">&#9679;</span> | 2. ACID at a Glance | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#9333ea">&#9679;</span> | 3. Atomicity: All or Nothing | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#ea580c">&#9679;</span> | 4. Consistency: Keep the Rules True | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#dc2626">&#9679;</span> | 5. Isolation: Safe Concurrent Work | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#0891b2">&#9679;</span> | 6. Durability: Commit Means Saved | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#4f46e5">&#9679;</span> | 7. Practical Transaction Commands | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#65a30d">&#9679;</span> | 8. Data Models Covered | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#2563eb">&#9679;</span> | 9. Relational Model Concepts | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#16a34a">&#9679;</span> | 10. Normalization | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#9333ea">&#9679;</span> | 11. Database Schema Types | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#ea580c">&#9679;</span> | 12. In-Class Demo Files | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#dc2626">&#9679;</span> | 13. Exercises | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#0891b2">&#9679;</span> | 14. Review Questions | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#4f46e5">&#9679;</span> | Further Reading | Review definitions, tables, examples, workflows, and key ideas. |
+
+### Last-Minute Checklist
+
+- Read each **Key idea** line first.
+- Memorize the main terms and compare similar concepts.
+- Re-run or rewrite the SQL examples by hand where SQL is included.
+- Use the review questions at the end as mock exam prompts.
+
+---
+
 ## 1. Why Transactions Matter
 
 A **transaction** is a group of database operations treated as one logical unit of work.

@@ -16,6 +16,60 @@ By the end of Day 4, students should be able to:
 
 ---
 
+## Exam Recap Guide
+
+<table>
+<tr>
+<td><strong><span style="color:#2563eb">Blue</span></strong></td>
+<td>Core definitions and concepts</td>
+</tr>
+<tr>
+<td><strong><span style="color:#16a34a">Green</span></strong></td>
+<td>Processes, workflows, and step-by-step logic</td>
+</tr>
+<tr>
+<td><strong><span style="color:#ea580c">Orange</span></strong></td>
+<td>SQL syntax, commands, formulas, and examples</td>
+</tr>
+<tr>
+<td><strong><span style="color:#dc2626">Red</span></strong></td>
+<td>Risks, mistakes, anomalies, and warnings</td>
+</tr>
+</table>
+
+### Quick Topic Map
+
+| Color | Topic | What to Recap Before Exam |
+| --- | --- | --- |
+| <span style="color:#2563eb">&#9679;</span> | 1. What Is SQL? | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#16a34a">&#9679;</span> | 2. Key Features of SQL | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#9333ea">&#9679;</span> | 3. Data Definition Language | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#ea580c">&#9679;</span> | 4. Data Manipulation Language | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#dc2626">&#9679;</span> | 5. Data Control Language | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#0891b2">&#9679;</span> | 6. Transaction Control Language | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#4f46e5">&#9679;</span> | 7. Transaction Properties | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#65a30d">&#9679;</span> | 8. Single-User vs Multiuser Database Systems | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#2563eb">&#9679;</span> | 9. Concurrency Control | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#16a34a">&#9679;</span> | 10. Lost Update Problem | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#9333ea">&#9679;</span> | 11. Serial Execution of Two Transactions | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#ea580c">&#9679;</span> | 12. Why Locks Are Needed | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#dc2626">&#9679;</span> | 13. Commit Is Needed to Unlock | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#0891b2">&#9679;</span> | 14. Correct Execution of Two Transactions | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#4f46e5">&#9679;</span> | 15. Uncommitted Data Problem | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#65a30d">&#9679;</span> | 16. Inconsistent Retrieval Problem | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#2563eb">&#9679;</span> | 17. SQL Command Categories Summary | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#16a34a">&#9679;</span> | 18. Exercises | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#9333ea">&#9679;</span> | 19. Review Questions | Review definitions, tables, examples, workflows, and key ideas. |
+
+### Last-Minute Checklist
+
+- Read each **Key idea** line first.
+- Memorize the main terms and compare similar concepts.
+- Re-run or rewrite the SQL examples by hand where SQL is included.
+- Use the review questions at the end as mock exam prompts.
+
+---
+
 ## 1. What Is SQL?
 
 **SQL** stands for **Structured Query Language**.

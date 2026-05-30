@@ -17,6 +17,55 @@ By the end of Day 6, students should be able to:
 
 ---
 
+## Exam Recap Guide
+
+<table>
+<tr>
+<td><strong><span style="color:#2563eb">Blue</span></strong></td>
+<td>Core definitions and concepts</td>
+</tr>
+<tr>
+<td><strong><span style="color:#16a34a">Green</span></strong></td>
+<td>Processes, workflows, and step-by-step logic</td>
+</tr>
+<tr>
+<td><strong><span style="color:#ea580c">Orange</span></strong></td>
+<td>SQL syntax, commands, formulas, and examples</td>
+</tr>
+<tr>
+<td><strong><span style="color:#dc2626">Red</span></strong></td>
+<td>Risks, mistakes, anomalies, and warnings</td>
+</tr>
+</table>
+
+### Quick Topic Map
+
+| Color | Topic | What to Recap Before Exam |
+| --- | --- | --- |
+| <span style="color:#2563eb">&#9679;</span> | 1. SQL Safe Updates | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#16a34a">&#9679;</span> | 2. SQL Syntax Structure | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#9333ea">&#9679;</span> | 3. Selection and Projection | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#ea580c">&#9679;</span> | 4. Set Theory in SQL | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#dc2626">&#9679;</span> | 5. Intersection | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#0891b2">&#9679;</span> | 6. Difference | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#4f46e5">&#9679;</span> | 7. Cross Join | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#65a30d">&#9679;</span> | 8. SQL Joins | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#2563eb">&#9679;</span> | 9. Aggregate Functions | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#16a34a">&#9679;</span> | 10. ORDER BY | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#9333ea">&#9679;</span> | 11. View Concept | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#ea580c">&#9679;</span> | 12. Full Query Example | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#dc2626">&#9679;</span> | 13. Exercises | Review definitions, tables, examples, workflows, and key ideas. |
+| <span style="color:#0891b2">&#9679;</span> | 14. Review Questions | Review definitions, tables, examples, workflows, and key ideas. |
+
+### Last-Minute Checklist
+
+- Read each **Key idea** line first.
+- Memorize the main terms and compare similar concepts.
+- Re-run or rewrite the SQL examples by hand where SQL is included.
+- Use the review questions at the end as mock exam prompts.
+
+---
+
 ## 1. SQL Safe Updates
 
 MySQL has a safety setting called `sql_safe_updates`.
